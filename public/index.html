@@ -38,10 +38,17 @@
             id="username"
             name="username"
             required
+            minlength="2"
           /><br /><br />
 
           <label for="message">Message:</label><br />
-          <textarea id="message" name="message" required></textarea><br /><br />
+          <textarea
+            id="message"
+            name="message"
+            required
+            maxlength="500"
+          ></textarea
+          ><br /><br />
 
           <button type="submit">Send POST Request</button>
         </form>

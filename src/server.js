@@ -19,9 +19,22 @@ mongoose
 // ==========================================
 // This defines the shape of the data in your database
 const submissionSchema = new mongoose.Schema({
-  username: { type: String, required: true },
-  message: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
+  username: {
+    type: String,
+    required: [true, "Username is required!"],
+    trim: true,
+    minlength: [2, "Username must be at least 2 characters long."],
+  },
+  message: {
+    type: String,
+    required: [true, "Message cannot be empty!"],
+    trim: true,
+    maxlength: [500, "Message cannot exceed 500 characters."],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const Submission = mongoose.model("Submission", submissionSchema);
@@ -44,25 +57,39 @@ app.get("/", (req, res) => {
 // Handle POST request and save to MongoDB
 app.post("/submit", async (req, res) => {
   try {
-    // 1. Create a new document using the Mongoose Model
+    // 1. Create and save the new document
     const newSubmission = new Submission({
       username: req.body.username,
       message: req.body.message,
     });
 
-    // 2. Save it to the database asynchronously
     await newSubmission.save();
 
-    console.log(`Saved submission from ${req.body.username} to database!`);
-
+    console.log(`Saved validated submission from ${req.body.username}`);
     res.send(`
-      <h2>Success! Data Saved to Database.</h2>
-      <p>Thank you, <strong>${req.body.username}</strong>. Your message has been stored permanently.</p>
-      <a href="/">Back Home</a> | <a href="/submissions">View All Submissions</a>
+      <h2>Success!</h2>
+      <p>Your message was validated and saved securely.</p>
+      <a href="/">Back Home</a>
     `);
   } catch (error) {
-    console.error("Error saving to database:", error);
-    res.status(500).send("Internal Server Error: Could not save data.");
+    // 2. Check if it's a Mongoose validation error
+    if (error.name === "ValidationError") {
+      let errors = [];
+      for (let field in error.errors) {
+        errors.push(error.errors[field].message);
+      }
+
+      // Send a 400 Bad Request response with the error messages
+      return res.status(400).send(`
+        <h2>Validation Error</h2>
+        <p style="color: red;">${errors.join("<br>")}</p>
+        <a href="/">Try Again</a>
+      `);
+    }
+
+    // 3. Catch-all for other unexpected server errors (like database loss)
+    console.error("Server error:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
