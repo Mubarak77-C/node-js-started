@@ -1,3 +1,5 @@
+// This runs everything inside app.js first
+require("../app.js");
 const http = require("http");
 
 // Define the port your server will listen on
