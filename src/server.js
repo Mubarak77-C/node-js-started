@@ -24,6 +24,12 @@ const submissionSchema = new mongoose.Schema({
     required: [true, "Username is required!"],
     trim: true,
     minlength: [2, "Username must be at least 2 characters long."],
+    // This regular expression ONLY allows letters (A-Z, a-z) and spaces.
+    // It will reject numbers like "12" or symbols!
+    match: [
+      /^[A-Za-z\s]+$/,
+      "Username can only contain letters, no numbers or symbols allowed.",
+    ],
   },
   message: {
     type: String,
