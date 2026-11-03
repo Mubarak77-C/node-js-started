@@ -3,19 +3,49 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Home Page</title>
-    <!-- Link your stylesheet -->
+    <title>Full Express Mini-Project</title>
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
     <div class="card">
-      <h1>Welcome to My Home Page</h1>
-      <nav>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/contact-me">Contact</a>
-      </nav>
-      <p>This page is being served dynamically by a express.js HTTP server!</p>
+      <h1>Express.js Feature Hub</h1>
+      <p>
+        Test out static files, route params, query strings, and POST requests
+        below:
+      </p>
+
+      <!-- 1. Route Parameters Test Link -->
+      <div class="section">
+        <h3>1. Test Route Parameters</h3>
+        <a href="/users/sarah_dev/posts/42">Visit /users/sarah_dev/posts/42</a>
+      </div>
+
+      <!-- 2. Query Strings Test Link -->
+      <div class="section">
+        <h3>2. Test Query Strings</h3>
+        <a href="/search?query=backend+development&sort=desc"
+          >Run Search Query</a
+        >
+      </div>
+
+      <!-- 3. POST Request Form -->
+      <div class="section">
+        <h3>3. Test POST Form Submission</h3>
+        <form action="/submit" method="POST">
+          <label for="username">Name:</label><br />
+          <input
+            type="text"
+            id="username"
+            name="username"
+            required
+          /><br /><br />
+
+          <label for="message">Message:</label><br />
+          <textarea id="message" name="message" required></textarea><br /><br />
+
+          <button type="submit">Send POST Request</button>
+        </form>
+      </div>
     </div>
   </body>
 </html>
