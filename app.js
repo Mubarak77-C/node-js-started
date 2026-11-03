@@ -33,3 +33,35 @@ function myfunction() {
 }
 
 myfunction();
+
+// A simulated async function that fetches user data
+
+const fetchData = (userID) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (!userID) {
+        reject(new Error("User id is required!"));
+      } else {
+        resolve({ id: userID, name: "Alice", role: "Developer" });
+      }
+    }, 3000);
+  });
+};
+
+async function getUSerProfile(userID) {
+  try {
+    console.log("Fetching user data...");
+
+    // We 'await' the promise. If it rejects, it jumps to catch.
+    const userData = await fetchData(userID);
+    console.log("Success USer found ! ", userData);
+  } catch (error) {
+    console.error("failed to fetch user profile ", error.message);
+  } finally {
+    console.log(
+      "Cleanup or final step (runs whether it succeeded or failed).\n",
+    );
+  }
+}
+getUSerProfile(43);
+//getUSerProfile(null);
