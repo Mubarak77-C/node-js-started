@@ -89,3 +89,14 @@ async function main() {
 }
 
 main().catch(console.error);
+
+const http = require("http");
+const fs = require("fs");
+const path = require("path");
+
+const server = http.createServer((req, res) => {
+  // You can check req.url to see what the user typed (e.g., "/", "/about")
+  let filePath = path.join(__dirname, "../public"); // (depending on where your html files are)
+
+  // Example logic for routing based on req.url...
+});
