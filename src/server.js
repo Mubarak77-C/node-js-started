@@ -6,6 +6,9 @@ const PORT = 3000;
 
 // 1. Static Middleware: Automatically serves CSS, images, and static assets from 'public/'
 app.use(express.static(path.join(__dirname, "../public")));
+// Middleware to parse incoming request bodies
+app.use(express.urlencoded({ extended: true })); // Parses HTML form data (urlencoded)
+app.use(express.json()); // Parses JSON data (for APIs/fetch)
 
 // 2. Define explicit routes
 app.get("/", (req, res) => {
@@ -37,6 +40,18 @@ app.get("/search", (req, res) => {
   res.send(
     `Searching for: "${searchTerm}" | Sorted by: ${sortBy} | Page: ${page}`,
   );
+});
+
+// Handle the POST request from the form
+app.post("/submit-form", (req, res) => {
+  // Access the form data using req.body (thanks to express.urlencoded)
+  const name = req.body.username;
+  const email = req.body.useremail;
+
+  console.log(`Received submission from: ${name} (${email})`);
+
+  // Respond back to the user
+  res.send(`Thank you, ${name}! We received your email: ${email}`);
 });
 
 // 5. 404 Catch-all Middleware (MUST BE AT THE VERY BOTTOM!)
